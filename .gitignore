@@ -13,11 +13,13 @@ dist/
 # Virtual Environment
 venv/
 env/
+interview-prep-venv/
 
 # Local development files
 .env                  # Your local environment variables (including API keys)
 db.sqlite3            # Your local SQLite database file
 *.log                 # Log files
+Procfile
 
 # Django specific
 /staticfiles/         # Collected static files (Render will collect them)
