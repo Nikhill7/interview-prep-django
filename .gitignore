@@ -1,0 +1,25 @@
+# .gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+.Python
+build/
+dist/
+
+# Virtual Environment
+venv/
+env/
+
+# Local development files
+.env                  # Your local environment variables (including API keys)
+db.sqlite3            # Your local SQLite database file
+*.log                 # Log files
+
+# Django specific
+/staticfiles/         # Collected static files (Render will collect them)
+.vscode/              # VS Code settings
+.idea/                # PyCharm settings

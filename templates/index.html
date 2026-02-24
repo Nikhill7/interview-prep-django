@@ -1,0 +1,193 @@
+{% load static %}
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Prep Pro - Django</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Basic form styling to make it look decent */
+        .ai-tool-section {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .ai-tool-section h3 {
+            color: #283747;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        .form-input, .form-select {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box; /* Include padding in width */
+        }
+        .form-input::placeholder {
+            color: #aaa;
+        }
+        .form-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+        }
+        .form-button:hover {
+            background-color: #0056b3;
+        }
+        .errorlist {
+            color: red;
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .output-area {
+            background-color: #e9f7ef; /* Light green background for output */
+            border: 1px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .output-area h4 {
+            color: #2e7d32; /* Green heading */
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        .output-area ul {
+            list-style: decimal inside; /* Numbered list */
+            padding-left: 0;
+        }
+        .output-area li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .error-message {
+            color: red;
+            background-color: #ffebee;
+            border: 1px solid #ef9a9a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Interview Prep Pro (Django Edition)!</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="#">Questions</a></li>
+                <li><a href="#">Mock Interviews</a></li>
+                <li><a href="#">Resources</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Your Path to Interview Success Starts Here</h2>
+            <p>Prepare confidently for your next big opportunity with Django and AI.</p>
+            <button>Get Started</button>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <h3>Vast Question Database</h3>
+                <p>Practice with thousands of questions across various industries.</p>
+            </div>
+            <div class="feature-card">
+                <h3>AI-Powered Mock Interviews</h3>
+                <p>Get instant feedback on your answers and delivery.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Expert Guides &amp; Tips</h3>
+                <p>Learn strategies from seasoned recruiters and hiring managers.</p>
+            </div>
+        </section>
+
+        <section id="ai-features" class="ai-tool-section">
+            <h3>Generate Interview Questions with Gemini</h3>
+            <form method="post" action="{% url 'generate_questions' %}">
+                {% csrf_token %} {# Django's Cross-Site Request Forgery protection #}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <button type="submit" class="form-button">Generate Questions</button>
+            </form>
+
+            {% if error_message %}
+                <div class="error-message">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+
+            {% if generated_questions %}
+                <div class="output-area">
+                    <h4>Generated Questions:</h4>
+                    <ul>
+                        {% for question in generated_questions %}
+                            <li>{{ question }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Interview Prep Pro. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body></html>
